@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MM Insurance Group{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --nd-navy: #0c2340;
+            --nd-gold: #C99700;
+            --light-gold: #f4e5c0;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: var(--nd-navy);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: var(--nd-gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Profile Circle */
+        .profile-circle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .profile-circle img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--nd-gold);
+        }
+
+        .profile-circle span {
+            font-weight: 500;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--nd-gold);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Side Navigation */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            right: 0;
+            background-color: var(--nd-navy);
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+
+        .sidenav.active {
+            width: 280px;
+        }
+
+        .sidenav a {
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            display: block;
+            transition: 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidenav a:hover {
+            background-color: rgba(201, 151, 0, 0.1);
+            border-left-color: var(--nd-gold);
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            color: var(--nd-gold);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Content Box */
+        .content-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .clickable-box {
+            background: var(--light-gold);
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .clickable-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(12, 35, 64, 0.2);
+            background: #ead89f;
+        }
+
+        .clickable-box h3 {
+            color: var(--nd-navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .clickable-box p {
+            margin: 0;
+        }
+
+        /* Document Cards */
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .document-card {
+            background: #e8e8e8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .document-icon {
+            width: 100px;
+            height: 120px;
+            background: #d0d0d0;
+            margin: 0 auto 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #888;
+        }
+
+        .document-name {
+            font-weight: 600;
+            color: var(--nd-navy);
+            margin-bottom: 1rem;
+            word-break: break-word;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .icon-btn {
+            background: var(--nd-navy);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: var(--nd-gold);
+            color: var(--nd-navy);
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--nd-navy);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal-close:hover {
+            color: var(--nd-gold);
+        }
+
+        .modal-content iframe,
+        .modal-content img {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        .modal-content img {
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+        }
+
+        .content-box h1 {
+            color: var(--nd-navy);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--nd-gold);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-box h2 {
+            color: var(--nd-navy);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--nd-navy);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            background-color: #051629;
+        }
+
+        .btn-secondary {
+            background-color: var(--nd-gold);
+            color: var(--nd-navy);
+            font-weight: bold;
+        }
+
+        .btn-secondary:hover {
+            background-color: #b08700;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--nd-navy);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--nd-gold);
+        }
+
+        /* Video Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('home') }}" class="logo">MM Insurance Group</a>
+        <div class="header-right">
+            {% if session.get('username') %}
+                <a href="{{ url_for('profile') }}" class="profile-circle">
+                    <img src="{{ session.get('image') }}" alt="Profile">
+                    <span>{{ session.get('name') }}</span>
+                </a>
+            {% endif %}
+            <button class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+    <nav id="sideNav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleMenu()">&times;</a>
+        
+        {% if not session.get('username') %}
+            <!-- Not Logged In Menu -->
+            <a href="{{ url_for('login') }}">Log In</a>
+            <a href="{{ url_for('create_account') }}">Create Account</a>
+            <a href="{{ url_for('careers') }}">Careers</a>
+            <a href="{{ url_for('about') }}">About Us</a>
+        {% elif session.get('role') == 'client' %}
+            <!-- Client Menu -->
+            <a href="{{ url_for('transactions') }}">Transactions</a>
+            <a href="{{ url_for('policy_documents') }}">Policy Documents</a>
+            <a href="{{ url_for('document_upload') }}">Document Upload</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('services') }}">Services</a>
+            <a href="{{ url_for('logout') }}">Sign Out</a>
+        {% elif session.get('role') == 'admin' %}
+            <!-- Admin Menu -->
+            <a href="{{ url_for('user_management') }}">User Management</a>
+            <a href="{{ url_for('payroll') }}">Payroll</a>
+            <a href="{{ url_for('dashboards') }}">Dashboards</a>
+            <a href="{{ url_for('logout') }}">Sign Out</a>
+        {% endif %}
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        function toggleMenu() {
+            const sideNav = document.getElementById('sideNav');
+            const overlay = document.getElementById('overlay');
+            sideNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

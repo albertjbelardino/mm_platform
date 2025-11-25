@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Home - MM Insurance Group{% endblock %}
+
+{% block content %}
+<div class="content-box">
+    <h1>Welcome to MM Insurance Group</h1>
+    
+    {% if session.get('username') %}
+        <p style="font-size: 1.2rem; margin: 1rem 0;">Welcome back, {{ session.get('name') }}!</p>
+        
+        {% if session.get('role') == 'admin' %}
+            <h2>Admin Dashboard</h2>
+            <p>Manage users, view reports, and oversee all insurance operations from your personalized dashboard.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="{{ url_for('dashboards') }}" class="btn btn-primary" style="margin-right: 1rem;">View Dashboards</a>
+                <a href="{{ url_for('user_management') }}" class="btn btn-secondary">Manage Users</a>
+            </div>
+        {% else %}
+            <h2>Your Insurance Portal</h2>
+            <p>Access your policies, view transactions, and manage your account all in one place.</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="{{ url_for('policy_documents') }}" class="btn btn-primary" style="margin-right: 1rem;">View Policies</a>
+                <a href="{{ url_for('transactions') }}" class="btn btn-secondary">View Transactions</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <p style="font-size: 1.2rem; margin: 1rem 0;">
+            Protecting what matters most to you with comprehensive insurance solutions tailored to your needs.
+        </p>
+        
+        <h2>Our Services</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <a href="{{ url_for('auto_insurance') }}" class="clickable-box">
+                <h3>Auto Insurance</h3>
+                <p>Comprehensive coverage for your vehicles with competitive rates and exceptional service.</p>
+            </a>
+            <a href="{{ url_for('home_insurance_info') }}" class="clickable-box">
+                <h3>Home Insurance</h3>
+                <p>Protect your home and belongings with customizable coverage options.</p>
+            </a>
+            <a href="{{ url_for('life_insurance') }}" class="clickable-box">
+                <h3>Life Insurance</h3>
+                <p>Secure your family's future with our flexible life insurance plans.</p>
+            </a>
+        </div>
+        
+        <h2>Why Choose Us?</h2>
+        <ul style="margin: 1rem 0; line-height: 1.8;">
+            <li>Trusted by thousands of families nationwide</li>
+            <li>24/7 customer support and claims assistance</li>
+            <li>Competitive rates with no hidden fees</li>
+            <li>Easy online account management</li>
+            <li>Financial strength and stability you can count on</li>
+        </ul>
+        
+        <h2>Hear From Our Founders</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/OIO7MFb7nQc" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a href="{{ url_for('create_account') }}" class="btn btn-primary" style="margin-right: 1rem;">Get Started</a>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary">Client Login</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

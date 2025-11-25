@@ -1,0 +1,17 @@
+<!-- templates/profile.html -->
+{% extends "base.html" %}
+{% block title %}Profile - MM Insurance Group{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1>Your Profile</h1>
+    <div style="display: flex; align-items: center; gap: 1.5rem; margin: 2rem 0;">
+        <img src="{{ session.get('image') }}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--nd-gold);">
+        <div>
+            <h2 style="margin: 0;">{{ session.get('name') }}</h2>
+            <p style="color: #666; margin: 0.5rem 0;">Role: {{ session.get('role')|capitalize }}</p>
+        </div>
+    </div>
+    <h2>Account Information</h2>
+    <p>Profile details and account management will be implemented with AWS integration.</p>
+</div>
+{% endblock %}

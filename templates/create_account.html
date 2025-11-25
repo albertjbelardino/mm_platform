@@ -1,0 +1,28 @@
+<!-- templates/create_account.html -->
+{% extends "base.html" %}
+{% block title %}Create Account - MM Insurance Group{% endblock %}
+{% block content %}
+<div class="content-box" style="max-width: 600px; margin: 3rem auto;">
+    <h1>Create Your Account</h1>
+    <p style="margin: 1rem 0;">Join thousands of satisfied customers protecting what matters most.</p>
+    <form method="POST">
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+    </form>
+</div>
+{% endblock %}

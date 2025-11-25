@@ -1,0 +1,80 @@
+<!-- templates/policy_documents.html -->
+{% extends "base.html" %}
+{% block title %}Policy Documents - MM Insurance Group{% endblock %}
+{% block content %}
+<div class="content-box">
+    <h1>Policy Documents</h1>
+    
+    {% if documents %}
+        <p>Access all your insurance policy documents in one secure location.</p>
+        
+        <div class="document-grid">
+            {% for doc in documents %}
+            <div class="document-card">
+                <div class="document-icon">
+                    {% if doc.type == 'pdf' %}
+                        📄
+                    {% else %}
+                        🖼️
+                    {% endif %}
+                </div>
+                <div class="document-name">{{ doc.filename }}</div>
+                <div class="document-actions">
+                    <button class="icon-btn" onclick="downloadDoc('{{ session.username }}', '{{ doc.filename }}')" title="Download">
+                        ⬇️
+                    </button>
+                    <button class="icon-btn" onclick="previewDoc('{{ doc.filepath }}', '{{ doc.type }}')" title="Preview">
+                        👁️
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You don't have any documents on file yet. Upload your policy documents to get started.</p>
+        <a href="{{ url_for('document_upload') }}" class="btn btn-primary">Upload Documents</a>
+    {% endif %}
+</div>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="previewContent"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function downloadDoc(username, filename) {
+    window.location.href = '/download/' + username + '/' + filename;
+}
+
+function previewDoc(filepath, type) {
+    const modal = document.getElementById('previewModal');
+    const content = document.getElementById('previewContent');
+    
+    if (type === 'pdf') {
+        content.innerHTML = '<iframe src="/' + filepath + '"></iframe>';
+    } else {
+        content.innerHTML = '<img src="/' + filepath + '" alt="Document Preview">';
+    }
+    
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    const modal = document.getElementById('previewModal');
+    modal.classList.remove('active');
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('previewModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+</script>
+{% endblock %}
