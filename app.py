@@ -97,6 +97,10 @@ def logout():
 def careers():
     return render_template('careers.html')
 
+@app.route('/schedule')
+def schedule():
+    return render_template('schedule.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')
