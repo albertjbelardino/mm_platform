@@ -12,8 +12,8 @@
         }
 
         :root {
-            --nd-navy: #0c2340;
-            --nd-gold: #C99700;
+            --nd-navy: #491503;
+            --nd-gold: #C0BAA7;
             --light-gold: #f4e5c0;
             --text-light: #ffffff;
             --text-dark: #333333;
@@ -270,6 +270,11 @@
             transform: scale(1.1);
         }
 
+        .logo img {
+            height: 130px;  /* Change this value */
+            width: 260px;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -401,6 +406,51 @@
             border-color: var(--nd-gold);
         }
 
+        /* Nested Menu Styles */
+        .menu-item-with-submenu {
+            position: relative;
+        }
+
+        .menu-item-with-submenu > a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .menu-item-with-submenu > a::after {
+            content: '▼';
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+            margin-left: 0.5rem;
+        }
+
+        .menu-item-with-submenu.open > a::after {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .submenu.open {
+            max-height: 500px;
+        }
+
+        .submenu a {
+            padding-left: 40px;
+            font-size: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .submenu a:hover {
+            background-color: rgba(201, 151, 0, 0.15);
+            border-left-color: var(--nd-gold);
+        }
+
         /* Video Container */
         .video-container {
             position: relative;
@@ -443,14 +493,10 @@
 </head>
 <body>
     <header>
-        <a href="{{ url_for('home') }}" class="logo">MM Insurance Group</a>
+        <a href="{{ url_for('home') }}" class="logo">
+            <img src="{{ url_for('static', filename='images/logo_on_transparent.svg') }}" alt="MM Insurance Group">
+        </a>
         <div class="header-right">
-            {% if session.get('username') %}
-                <a href="{{ url_for('profile') }}" class="profile-circle">
-                    <img src="{{ session.get('image') }}" alt="Profile">
-                    <span>{{ session.get('name') }}</span>
-                </a>
-            {% endif %}
             <button class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -463,29 +509,60 @@
 
     <nav id="sideNav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleMenu()">&times;</a>
-        
-        {% if not session.get('username') %}
-            <!-- Not Logged In Menu -->
-            <a href="{{ url_for('login') }}">Log In</a>
-            <a href="{{ url_for('create_account') }}">Create Account</a>
+            <!-- Insurance Services with Nested Submenu -->
+            <div class="menu-item-with-submenu">
+                <a onclick="toggleSubmenu(event, 'insurance-submenu')">Insurance Services</a>
+                <div id="insurance-submenu" class="submenu">
+                    <div class="menu-item-with-submenu">
+                        <a onclick="toggleSubmenu(event, 'auto-insurance-submenu')">Auto Insurance</a>
+                        <div id="auto-insurance-submenu" class="submenu">
+                            <a href="{{ url_for('auto_accident_forgiveness') }}">Accident Forgiveness</a>
+                            <a href="{{ url_for('auto_collision_coverage') }}">Collision Coverage</a>
+                            <a href="{{ url_for('auto_comprehensive_coverage') }}">Comprehensive Coverage</a>
+                            <a href="{{ url_for('auto_diminishing_deductible') }}">Diminishing Deductible</a>
+                            <a href="{{ url_for('auto_liability_coverage') }}">Liability Coverage</a>
+                            <a href="{{ url_for('auto_medical_payments') }}">Medical Payments Coverage</a>
+                            <a href="{{ url_for('auto_personal_injury') }}">Personal Injury Protection</a>
+                            <a href="{{ url_for('auto_rental_reimbursement') }}">Rental Reimbursement</a>
+                            <a href="{{ url_for('auto_roadside_assistance') }}">Roadside Assistance</a>
+                            <a href="{{ url_for('auto_towing') }}">Towing</a>
+                        </div>
+                    </div>
+                    <div class="menu-item-with-submenu">
+                        <a onclick="toggleSubmenu(event, 'home-insurance-submenu')">Home Insurance</a>
+                            <div id="home-insurance-submenu" class="submenu">
+                                <a href="{{ url_for('home_condo') }}">Condo Insurance</a>
+                                <a href="{{ url_for('home_homeowners_liability') }}">Homeowners Liability</a>
+                                <a href="{{ url_for('home_landlords') }}">Landlord Insurance</a>
+                                <a href="{{ url_for('home_property') }}">Property Insurance</a>
+                                <a href="{{ url_for('home_renters') }}">Renters Insurance</a>
+                                <a href="{{ url_for('home_property') }}">Property Insurance</a>
+                            </div>
+                    </div>
+                    <div class="menu-item-with-submenu">
+                        <a onclick="toggleSubmenu(event, 'business-insurance-submenu')">Business and Commercial</a>
+                            <div id="business-insurance-submenu" class="submenu">
+                                <a href="{{ url_for('business_builders_risk') }}">Builders Risk Insurance</a>
+                                <a href="{{ url_for('business_commercial_auto') }}">Commercial Auto</a>
+                                <a href="{{ url_for('business_general_liability') }}">General Liability</a>
+                                <a href="{{ url_for('business_commercial_property') }}">Commercial Property Insurance</a>
+                                <a href="{{ url_for('business_commercial_umbrella') }}">Commercial Umbrella Insurance</a>
+                                <a href="{{ url_for('business_cyber') }}">Cyber Insurance</a>
+                                <a href="{{ url_for('business_directors_officers') }}">Directors and Officers Insurance</a>
+                                <a href="{{ url_for('business_epli') }}">EPLI Insurance</a>
+                                
+                                <a href="{{ url_for('business_inland_marine') }}">Inland Marine Insurance</a>
+                                <a href="{{ url_for('business_medical_malpractice') }}">Medical Malpractice Insurance</a>
+                                <a href="{{ url_for('business_workers_comp') }}">Workers Compensation</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+
             <a href="{{ url_for('careers') }}">Careers</a>
             <a href="{{ url_for('schedule') }}">Schedule a Consultation</a>
             <a href="{{ url_for('about') }}">About Us</a>
-        {% elif session.get('role') == 'client' %}
-            <!-- Client Menu -->
-            <a href="{{ url_for('transactions') }}">Transactions</a>
-            <a href="{{ url_for('policy_documents') }}">Policy Documents</a>
-            <a href="{{ url_for('document_upload') }}">Document Upload</a>
-            <a href="{{ url_for('profile') }}">Profile</a>
-            <a href="{{ url_for('services') }}">Services</a>
-            <a href="{{ url_for('logout') }}">Sign Out</a>
-        {% elif session.get('role') == 'admin' %}
-            <!-- Admin Menu -->
-            <a href="{{ url_for('user_management') }}">User Management</a>
-            <a href="{{ url_for('payroll') }}">Payroll</a>
-            <a href="{{ url_for('dashboards') }}">Dashboards</a>
-            <a href="{{ url_for('logout') }}">Sign Out</a>
-        {% endif %}
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -508,6 +585,18 @@
             const overlay = document.getElementById('overlay');
             sideNav.classList.toggle('active');
             overlay.classList.toggle('active');
+        }
+
+        function toggleSubmenu(event, submenuId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const submenu = document.getElementById(submenuId);
+            const parentItem = submenu.parentElement;
+            
+            // Toggle the submenu
+            submenu.classList.toggle('open');
+            parentItem.classList.toggle('open');
         }
     </script>
     {% block extra_js %}{% endblock %}
